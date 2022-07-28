@@ -1,10 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const con = require("../lib/dbConnection");
-
 router.get("/", (req, res) => {
 	try {
-		con.query("SELECT * FROM products", (err, result) => {
+		con.query("SELECT * FROM orders", (err, result) => {
 			if (err) throw err;
 			res.send(result);
 		});
@@ -14,21 +13,17 @@ router.get("/", (req, res) => {
 });
 router.post("/", (req, res) => {
 	const {
-		product_id,
-		sku,
-		name,
-		price,
-		weight,
-		descriptions,
-		thumbnail,
-		image,
-		category,
-		create_date,
-		stock,
+		order_id,
+		user_id,
+		amount,
+		shipping_address,
+		order_email,
+		order_date,
+		order_status,
 	} = req.body;
 	try {
 		con.query(
-			`INSERT INTO products (product_id, sku, name, price, weight, descriptions, thumbnail, image, category, create_date, stock) values ("${product_id}","${sku}","${name}","${price}","${weight}","${descriptions}","${thumbnail}", "${image}","${category}", "${create_date}", "${stock}")`,
+			`INSERT INTO orders (order_id,user_id,amount,shipping_address,order_email,order_date,order_status) values ("${order_id}","${user_id}","${amount}","${shipping_address}", "${order_email}", "${order_date}", "${order_status}")`,
 			(err, result) => {
 				if (err) throw err;
 				res.send(result);
@@ -38,10 +33,11 @@ router.post("/", (req, res) => {
 		console.log(error);
 	}
 });
+
 router.get("/:id", (req, res) => {
 	try {
 		con.query(
-			`SELECT * FROM products where product_id= ${req.params.id} `,
+			`SELECT * FROM orders where order_id= ${req.params.id} `,
 			(err, result) => {
 				if (err) throw err;
 				res.send(result);
@@ -54,21 +50,17 @@ router.get("/:id", (req, res) => {
 });
 router.put("/:id", (req, res) => {
 	const {
-		product_id,
-		sku,
-		name,
-		price,
-		weight,
-		descriptions,
-		thumbnail,
-		image,
-		category,
-		create_date,
-		stock,
+		order_id,
+		user_id,
+		amount,
+		shipping_address,
+		order_email,
+		order_date,
+		order_status,
 	} = req.body;
 	try {
 		con.query(
-			`UPDATE products SET product_id="${product_id}", sku="${sku}", name="${name}", price="${price}", weight="${weight}", descriptions="${descriptions}", thumbnail="${thumbnail}", image="${image}" WHERE product_id= ${req.params.id}`,
+			`UPDATE orders SET order_id="${order_id}","${user_id}","${amount}","${shipping_address}", "${order_email}", "${order_date}", "${order_status}" WHERE order_id= ${req.params.id}`,
 			(err, result) => {
 				if (err) throw err;
 				res.send(result);
@@ -81,7 +73,7 @@ router.put("/:id", (req, res) => {
 router.delete("/:id", (req, res) => {
 	try {
 		con.query(
-			`Delete from products WHERE product_id= ${req.params.id}`,
+			`Delete from orders WHERE order_id= ${req.params.id}`,
 			(err, result) => {
 				if (err) throw err;
 				res.send(result);
@@ -91,5 +83,4 @@ router.delete("/:id", (req, res) => {
 		console.log(error);
 	}
 });
-
 module.exports = router;

@@ -4,7 +4,7 @@ const con = require("../lib/dbConnection");
 
 router.get("/", (req, res) => {
 	try {
-		con.query("SELECT * FROM products", (err, result) => {
+		con.query("SELECT * FROM categories", (err, result) => {
 			if (err) throw err;
 			res.send(result);
 		});
@@ -12,23 +12,12 @@ router.get("/", (req, res) => {
 		console.log(error);
 	}
 });
+
 router.post("/", (req, res) => {
-	const {
-		product_id,
-		sku,
-		name,
-		price,
-		weight,
-		descriptions,
-		thumbnail,
-		image,
-		category,
-		create_date,
-		stock,
-	} = req.body;
+	const { category_id, name, description, thumbnail } = req.body;
 	try {
 		con.query(
-			`INSERT INTO products (product_id, sku, name, price, weight, descriptions, thumbnail, image, category, create_date, stock) values ("${product_id}","${sku}","${name}","${price}","${weight}","${descriptions}","${thumbnail}", "${image}","${category}", "${create_date}", "${stock}")`,
+			`INSERT INTO categories (category_id,name,description,thumbnail) values ("${category_id}","${name}","${description}","${thumbnail}")`,
 			(err, result) => {
 				if (err) throw err;
 				res.send(result);
@@ -41,7 +30,7 @@ router.post("/", (req, res) => {
 router.get("/:id", (req, res) => {
 	try {
 		con.query(
-			`SELECT * FROM products where product_id= ${req.params.id} `,
+			`SELECT * FROM categories where category_id= ${req.params.id} `,
 			(err, result) => {
 				if (err) throw err;
 				res.send(result);
@@ -53,22 +42,10 @@ router.get("/:id", (req, res) => {
 	}
 });
 router.put("/:id", (req, res) => {
-	const {
-		product_id,
-		sku,
-		name,
-		price,
-		weight,
-		descriptions,
-		thumbnail,
-		image,
-		category,
-		create_date,
-		stock,
-	} = req.body;
+	const { category_id, name, description, thumbnail } = req.body;
 	try {
 		con.query(
-			`UPDATE products SET product_id="${product_id}", sku="${sku}", name="${name}", price="${price}", weight="${weight}", descriptions="${descriptions}", thumbnail="${thumbnail}", image="${image}" WHERE product_id= ${req.params.id}`,
+			`UPDATE categories SET category_id="${category_id}", name="${name}", description ="${description}", thumbnail="${thumbnail}" WHERE category_id= ${req.params.id}`,
 			(err, result) => {
 				if (err) throw err;
 				res.send(result);
@@ -81,7 +58,7 @@ router.put("/:id", (req, res) => {
 router.delete("/:id", (req, res) => {
 	try {
 		con.query(
-			`Delete from products WHERE product_id= ${req.params.id}`,
+			`Delete from categories WHERE category_id= ${req.params.id}`,
 			(err, result) => {
 				if (err) throw err;
 				res.send(result);
@@ -91,5 +68,4 @@ router.delete("/:id", (req, res) => {
 		console.log(error);
 	}
 });
-
 module.exports = router;
