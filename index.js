@@ -3,10 +3,11 @@ const express = require("express"); // Used to set up a server
 const cors = require("cors"); // Used to prevent errors when working locally
 
 // Import routes
-const userRoute = require("./routes/userRoute");
-const productsRoute = require("./routes/productsRoute");
-const categoriesRoute = require("./routes/categoriesRoute");
-const ordersRoute = require("./routes/ordersRoute");
+const passengersRoute = require("./routes/passengersRoute");
+const flightsRoute = require("./routes/flightsRoute");
+const jetsRoute = require("./routes/jetsRoute");
+const ticketsRoute = require("./routes/ticketsRoute");
+
 // Configure Server
 const app = express(); // Initialize express as an app variable
 app.set("port", process.env.PORT || 6969); // Set the port
@@ -18,12 +19,11 @@ app.use(cors()); // Dont let local development give errors
 app.get("/", (req, res) => {
 	res.json({ msg: "Welcome" });
 });
-
 // Use individual routes when visiting these URLS
-app.use("/users", userRoute);
-app.use("/products", productsRoute);
-app.use("/categories", categoriesRoute);
-app.use("/orders", ordersRoute);
+app.use("/passengers", passengersRoute);
+app.use("/flights", flightsRoute);
+app.use("/jets", jetsRoute);
+app.use("/tickets", ticketsRoute);
 
 // Set up server to start listening for requests
 app.listen(app.get("port"), () => {

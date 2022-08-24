@@ -1,10 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const con = require("../lib/dbConnection");
-
 router.get("/", (req, res) => {
 	try {
-		con.query("SELECT * FROM products", (err, result) => {
+		con.query("SELECT * FROM flights", (err, result) => {
 			if (err) throw err;
 			res.send(result);
 		});
@@ -14,21 +13,16 @@ router.get("/", (req, res) => {
 });
 router.post("/", (req, res) => {
 	const {
-		product_id,
-		sku,
-		name,
-		price,
-		weight,
-		descriptions,
-		thumbnail,
-		image,
-		category,
-		create_date,
-		stock,
+		flight_id,
+		flight_date,
+		from_destination,
+		to_destination,
+		jet_id,
+		duration,
 	} = req.body;
 	try {
 		con.query(
-			`INSERT INTO products (product_id, sku, name, price, weight, descriptions, thumbnail, image, category, create_date, stock) values ("${product_id}","${sku}","${name}","${price}","${weight}","${descriptions}","${thumbnail}", "${image}","${category}", "${create_date}", "${stock}")`,
+			`INSERT INTO flights (flight_id,flight_date,from_destination,to_destination,jet_id,duration) values ("${flight_id}", "${flight_date}", "${from_destination}", "${to_destination}", "${jet_id}", "${duration}")`,
 			(err, result) => {
 				if (err) throw err;
 				res.send(result);
@@ -38,10 +32,11 @@ router.post("/", (req, res) => {
 		console.log(error);
 	}
 });
+
 router.get("/:id", (req, res) => {
 	try {
 		con.query(
-			`SELECT * FROM products where product_id= ${req.params.id} `,
+			`SELECT * FROM flights where flight_id= ${req.params.id} `,
 			(err, result) => {
 				if (err) throw err;
 				res.send(result);
@@ -54,21 +49,16 @@ router.get("/:id", (req, res) => {
 });
 router.put("/:id", (req, res) => {
 	const {
-		product_id,
-		sku,
-		name,
-		price,
-		weight,
-		descriptions,
-		thumbnail,
-		image,
-		category,
-		create_date,
-		stock,
+		flight_id,
+		flight_date,
+		from_destination,
+		to_destination,
+		jet_id,
+		duration,
 	} = req.body;
 	try {
 		con.query(
-			`UPDATE products SET product_id="${product_id}", sku="${sku}", name="${name}", price="${price}", weight="${weight}", descriptions="${descriptions}", thumbnail="${thumbnail}", image="${image}" WHERE product_id= ${req.params.id}`,
+			`INSERT INTO flights (flight_id,flight_date,from_location,to_destination,jet_id,duration) values ( "${flight_id}","${flight_date}", "${from_destination}", "${to_destination}", "${jet_id}", "${duration}")`,
 			(err, result) => {
 				if (err) throw err;
 				res.send(result);
@@ -81,7 +71,7 @@ router.put("/:id", (req, res) => {
 router.delete("/:id", (req, res) => {
 	try {
 		con.query(
-			`Delete from products WHERE product_id= ${req.params.id}`,
+			`Delete from orders WHERE flight_id= ${req.params.id}`,
 			(err, result) => {
 				if (err) throw err;
 				res.send(result);
@@ -91,5 +81,4 @@ router.delete("/:id", (req, res) => {
 		console.log(error);
 	}
 });
-
 module.exports = router;
